@@ -1,10 +1,10 @@
 import "./styles.css";
-import QuoteGenerator from "./components/QuoteGenerator";
+import MarkdownPreviewer from "./components/MarkdownPreviewer";
 
 export default function App() {
   return (
     <div className="App">
-      <QuoteGenerator />
+      <MarkdownPreviewer />
     </div>
   );
 }
