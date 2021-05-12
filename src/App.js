@@ -1,5 +1,5 @@
 import "./styles.css";
-import MarkdownPreviewer from "./components/MarkdownPreviewer";
+import { MarkdownPreviewer } from "./components/MarkdownPreviewer/";
 
 export default function App() {
   return (
