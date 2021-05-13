@@ -14,4 +14,5 @@ export const Editor = styled.div`
   width: 95%;
   min-height: 100%;
   overflow: hidden;
+  text-align: justify;
 `;

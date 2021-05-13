@@ -55,6 +55,12 @@ export const MarkdownPreviewer = () => {
       : setWindowMax({ previewWindow: false });
   };
 
+  const zoomPreviewWindow = () => {
+    !windowZoom.previewZoom
+      ? setWindowZoom({ previewZoom: true })
+      : setWindowZoom({ previewZoom: false });
+  };
+
   const handleChange = (e) => setUserInput(e.target.value);
   const handleClick = () =>
     setMarkDown(marked(userInput, { renderer: renderer }));
@@ -64,8 +70,8 @@ export const MarkdownPreviewer = () => {
     <>
       <Wrapper>
         <SiteBanner title="Markdown Previewer Mini" />
-
         <InnerWrapper
+          editor
           position="editorWrapper"
           full={!windowMax.editorWindow ? false : true}
         >
@@ -78,7 +84,6 @@ export const MarkdownPreviewer = () => {
               id="editorSize"
             />
           </Tools>
-
           <Editor
             as="textarea"
             position="editor"
@@ -88,32 +93,28 @@ export const MarkdownPreviewer = () => {
           />
           <Controls />
         </InnerWrapper>
+        <InnerWrapper
+          position="PreviewWrapper"
+          full={!windowMax.previewWindow ? false : true}
+        >
+          <Tools position="previewtools">
+            <WindowTitle title="Markdown previewer" />
+            <ZoomBtn size="40px" id="zmBtn" onClick={zoomPreviewWindow} />
+            <ResizeBtn
+              size="40px"
+              onClick={resizePreviewWindow}
+              id="editorSize"
+            />
+          </Tools>
+          <Editor
+            as="div"
+            position="preview"
+            id="preview"
+            dangerouslySetInnerHTML={{ __html: markDown }}
+          />
+        </InnerWrapper>
       </Wrapper>
 
-      <div
-        id="preview"
-        style={
-          windowMax.previewWindow
-            ? {
-                border: "1px solid #111",
-                margin: "0 auto 32px",
-                minHeight: "120px",
-                width: "80%",
-                minWidth: "80%",
-                height: "80%",
-                minHeight: "400px"
-              }
-            : {
-                border: "1px solid #111",
-                margin: "0 auto 32px",
-                minHeight: "120px",
-                width: "min-content",
-                minWidth: "min-content",
-                minHeight: "min-content"
-              }
-        }
-        dangerouslySetInnerHTML={{ __html: markDown }}
-      />
       <button type="submit" onClick={handleClick}>
         Create markdown
       </button>

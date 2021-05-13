@@ -7,6 +7,7 @@ const StyledBanner = styled.div`
     font-weight: 600;
     margin: 0 auto 16px;
     text-align: left;
+    user-select: none;
   }
 `;
 

@@ -25,12 +25,16 @@ export const InnerWrapper = styled(Wrapper)`
   background: transparent;
   box-shadow: 20px 20px 60px #cecece, -20px -20px 60px #ffffff;
   grid-template-columns: 1fr;
-  grid-template-rows: minmax(20px, 60px) 1fr minmax(20px, 60px);
+  grid-template-rows: minmax(20px, 80px) 1fr minmax(20px, 60px);
   gap: 0px 0px;
-  grid-template-areas:
-    "tools"
+  grid-template-areas: ${(props) =>
+    props.editor
+      ? `"tools"
     "editor"
-    "controls";
+    "controls";`
+      : `"previewtools"
+    "preview"
+    "preview";`};
   grid-area: ${(props) => props.position};
   width: ${(props) => (props.full ? "100%" : "60%")};
   height: ${(props) => (props.full ? "100%" : "60%")};
