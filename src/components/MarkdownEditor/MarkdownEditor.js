@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { lighten, darken } from "polished";
+import { darken } from "polished";
 
 export const Wrapper = styled.div`
   background: transparent;
@@ -21,7 +21,7 @@ export const Wrapper = styled.div`
 `;
 
 export const InnerWrapper = styled(Wrapper)`
-  border-radius: 50px;
+  border-radius: 5px;
   background: transparent;
   box-shadow: 20px 20px 60px #cecece, -20px -20px 60px #ffffff;
   grid-template-columns: 1fr;
@@ -43,11 +43,12 @@ export const Tools = styled.div`
   align-self: center;
   justify-self: stretch;
   display: flex;
-  border-radius: 50px 50px 0 0;
+  border-radius: 5px 5px 0 0;
   grid-area: ${(props) => props.position};
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-content: center;
+  align-items: center;
   border-bottom: 1px solid ${darken(0.1, "#f2f2f2")};
   padding: 1.2em 2em 0.2em;
   margin-bottom: 0.8em;
@@ -55,6 +56,6 @@ export const Tools = styled.div`
 
 export const Controls = styled(Tools)`
   border: none;
-  border-radius: 0 0 50px 50px;
+  border-radius: 0 0 5px 5px;
   margin-top: 0.8em;
 `;

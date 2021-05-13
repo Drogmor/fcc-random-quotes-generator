@@ -3,8 +3,10 @@ import marked from "marked";
 import { Wrapper, InnerWrapper, Tools, Controls } from "../MarkdownEditor";
 import { WindowTitle } from "../WindowTitle";
 import { ResizeBtn } from "../ResizeBtn";
+import { ZoomBtn } from "../ZoomBtn";
 import { SiteBanner } from "../SiteBanner";
 import { Editor } from "../Editor";
+
 const renderer = new marked.Renderer();
 
 export const MarkdownPreviewer = () => {
@@ -12,7 +14,11 @@ export const MarkdownPreviewer = () => {
     editorWindow: null,
     previewWindow: null
   });
-  // const [previewMax, setPreviewMax] = useState(false);
+  const [windowZoom, setWindowZoom] = useState({
+    editorZoom: null,
+    previewZoom: null
+  });
+
   const [userInput, setUserInput] = useState("");
   const [
     markDown = marked("# Heading\n## Subheading\nhello"),
@@ -37,6 +43,12 @@ export const MarkdownPreviewer = () => {
       : setWindowMax({ editorWindow: false });
   };
 
+  const zoomEditorWindow = () => {
+    !windowZoom.editorZoom
+      ? setWindowZoom({ editorZoom: true })
+      : setWindowZoom({ editorZoom: false });
+  };
+
   const resizePreviewWindow = () => {
     !windowMax.previewWindow
       ? setWindowMax({ previewWindow: true })
@@ -52,47 +64,31 @@ export const MarkdownPreviewer = () => {
     <>
       <Wrapper>
         <SiteBanner title="Markdown Previewer Mini" />
-        {windowMax.editorWindow ? (
-          <InnerWrapper position="editorWrapper" full>
-            <Tools position="tools">
-              <WindowTitle title="Editor" />
-              <ResizeBtn
-                size="40px"
-                onClick={resizeEditorWindow}
-                id="editorSize"
-              />
-            </Tools>
-            <Editor
-              as="textarea"
-              position="editor"
-              id="text"
-              onChange={handleChange}
+
+        <InnerWrapper
+          position="editorWrapper"
+          full={!windowMax.editorWindow ? false : true}
+        >
+          <Tools position="tools">
+            <WindowTitle title="Markdown editor" />
+            <ZoomBtn size="40px" id="zmBtn" onClick={zoomEditorWindow} />
+            <ResizeBtn
+              size="40px"
+              onClick={resizeEditorWindow}
+              id="editorSize"
             />
-            <Controls />
-          </InnerWrapper>
-        ) : (
-          <InnerWrapper position="editorWrapper">
-            <Tools position="tools">
-              <WindowTitle title="Editor" />
-              <ResizeBtn
-                size="40px"
-                onClick={resizeEditorWindow}
-                id="editorSize"
-              />
-            </Tools>
-            <Editor
-              as="textarea"
-              position="editor"
-              id="text"
-              onChange={handleChange}
-            />
-            <Controls />
-          </InnerWrapper>
-        )}
+          </Tools>
+
+          <Editor
+            as="textarea"
+            position="editor"
+            id="text"
+            onChange={handleChange}
+            zoom={!windowZoom.editorZoom ? false : true}
+          />
+          <Controls />
+        </InnerWrapper>
       </Wrapper>
-      {/* <button id="previewSize" onClick={maximizeWindow}>
-        X
-      </button> */}
 
       <div
         id="preview"

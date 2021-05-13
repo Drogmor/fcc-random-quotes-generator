@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faWindowMaximize,
-  faWindowMinimize
-} from "@fortawesome/free-solid-svg-icons";
+import { faSearchPlus, faSearchMinus } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../Button";
 
-export const ResizeBtn = ({ id, bg, onClick, color, size, fontSize }) => {
+export const ZoomBtn = ({ id, bg, onClick, color, size, fontSize }) => {
   const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     const el = document.getElementById(id);
     const mouseClickHandler = (event) => {
-      console.log(clicked);
       setClicked((clicked) => !clicked);
     };
     if (el) {
@@ -22,6 +18,7 @@ export const ResizeBtn = ({ id, bg, onClick, color, size, fontSize }) => {
       };
     }
   }, [clicked]);
+
   return (
     <Button
       id={id}
@@ -32,9 +29,9 @@ export const ResizeBtn = ({ id, bg, onClick, color, size, fontSize }) => {
       size={size}
     >
       {clicked ? (
-        <FontAwesomeIcon color={color} icon={faWindowMinimize} />
+        <FontAwesomeIcon color={color} icon={faSearchMinus} />
       ) : (
-        <FontAwesomeIcon color={color} icon={faWindowMaximize} />
+        <FontAwesomeIcon color={color} icon={faSearchPlus} />
       )}
     </Button>
   );
