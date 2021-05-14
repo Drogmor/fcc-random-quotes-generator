@@ -4,15 +4,21 @@ import { darken } from "polished";
 export const Wrapper = styled.div`
   background: transparent;
   display: grid;
-  grid-template-columns: 60px 1fr 60px;
-  grid-template-rows: minmax(20px, 60px) 1fr minmax(20px, 60px) 1fr;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: minmax(20px, 60px) 1fr;
+  /* grid-template-columns: 60px 1fr 60px;
+  grid-template-rows: minmax(20px, 60px) 1fr minmax(20px, 60px) 1fr; */
   gap: 0px 0px;
   grid-template-areas:
+    "banner banner"
+    "editorWrapper PreviewWrapper";
+  /* grid-template-areas:
     ". banner ."
     ". editorWrapper ."
     ". . ."
-    ". PreviewWrapper .";
-  height: 100vh;
+    ". PreviewWrapper ."; */
+  height: auto;
+  min-height: 50vh;
   align-items: stretch;
   justify-items: center;
   align-content: center;
@@ -36,8 +42,8 @@ export const InnerWrapper = styled(Wrapper)`
     "preview"
     "preview";`};
   grid-area: ${(props) => props.position};
-  width: ${(props) => (props.full ? "100%" : "60%")};
-  height: ${(props) => (props.full ? "100%" : "60%")};
+  width: ${(props) => (props.full ? "100%" : "70%")};
+  height: ${(props) => (props.full ? "100%" : "40%")};
   overflow: hidden;
   transition: 0.2s all linear;
 `;
@@ -59,6 +65,8 @@ export const Tools = styled.div`
 `;
 
 export const Controls = styled(Tools)`
+  grid-area: controls;
+  justify-content: flex-end;
   border: none;
   border-radius: 0 0 5px 5px;
   margin-top: 0.8em;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import marked from "marked";
 import { Wrapper, InnerWrapper, Tools, Controls } from "../MarkdownEditor";
 import { WindowTitle } from "../WindowTitle";
@@ -6,40 +6,34 @@ import { ResizeBtn } from "../ResizeBtn";
 import { ZoomBtn } from "../ZoomBtn";
 import { SiteBanner } from "../SiteBanner";
 import { Editor } from "../Editor";
+import { placeholder } from "../../assets/placeholder";
+import { SubmitBtn } from "../SubmitBtn";
+import { ResetBtn } from "../ResetBtn";
+import { ClearBtn } from "../ClearBtn";
+
+marked.setOptions({ breaks: true });
 
 const renderer = new marked.Renderer();
+renderer.link = (href, title, text) =>
+  `<a target="_blank" href="${href}">${text}"</a>"`;
 
 export const MarkdownPreviewer = () => {
   const [windowMax, setWindowMax] = useState({
-    editorWindow: null,
-    previewWindow: null
+    editorWindow: false,
+    previewWindow: false
   });
   const [windowZoom, setWindowZoom] = useState({
     editorZoom: null,
     previewZoom: null
   });
 
-  const [userInput, setUserInput] = useState("");
-  const [
-    markDown = marked("# Heading\n## Subheading\nhello"),
-    setMarkDown
-  ] = useState();
-
-  // const maximizeWindow = (e) => {
-  //   e.preventDefault();
-  //   console.log(e.target.id);
-  //   e.target.id === "editorSize"
-  //     ? !windowMax.editorWindow
-  //       ? setWindowMax({ editorWindow: true })
-  //       : setWindowMax({ editorWindow: false })
-  //     : !windowMax.previewWindow
-  //     ? setWindowMax({ previewWindow: true })
-  //     : setWindowMax({ previewWindow: false });
-  // };
+  const [markDown = placeholder, setMarkDown] = useState();
 
   const resizeEditorWindow = () => {
     !windowMax.editorWindow
-      ? setWindowMax({ editorWindow: true })
+      ? !windowMax.previewWindow
+        ? setWindowMax({ editorWindow: true })
+        : setWindowMax({ editorWindow: true, previewWindow: false })
       : setWindowMax({ editorWindow: false });
   };
 
@@ -51,7 +45,9 @@ export const MarkdownPreviewer = () => {
 
   const resizePreviewWindow = () => {
     !windowMax.previewWindow
-      ? setWindowMax({ previewWindow: true })
+      ? !windowMax.editorWindow
+        ? setWindowMax({ previewWindow: true })
+        : setWindowMax({ previewWindow: true, editorWindow: false })
       : setWindowMax({ previewWindow: false });
   };
 
@@ -61,10 +57,21 @@ export const MarkdownPreviewer = () => {
       : setWindowZoom({ previewZoom: false });
   };
 
-  const handleChange = (e) => setUserInput(e.target.value);
-  const handleClick = () =>
-    setMarkDown(marked(userInput, { renderer: renderer }));
-  const resetPreviewer = () => setMarkDown("");
+  const handleChange = (e) => {
+    setMarkDown(e.target.value);
+  };
+  const handleClick = (e) => {
+    setMarkDown(e.target.value);
+  };
+  const handleReset = (e) => {
+    document.getElementById("editor").value = placeholder;
+    setMarkDown(placeholder);
+  };
+
+  const handleClear = () => {
+    document.getElementById("editor").value = "";
+    setMarkDown("");
+  };
 
   return (
     <>
@@ -77,21 +84,45 @@ export const MarkdownPreviewer = () => {
         >
           <Tools position="tools">
             <WindowTitle title="Markdown editor" />
-            <ZoomBtn size="40px" id="zmBtn" onClick={zoomEditorWindow} />
+            <ZoomBtn
+              size="40px"
+              id="editorZoomBtn"
+              onClick={zoomEditorWindow}
+            />
             <ResizeBtn
               size="40px"
               onClick={resizeEditorWindow}
-              id="editorSize"
+              id="editorSizeBtn"
             />
           </Tools>
           <Editor
             as="textarea"
             position="editor"
-            id="text"
+            id="editor"
+            value={markDown}
             onChange={handleChange}
             zoom={!windowZoom.editorZoom ? false : true}
           />
-          <Controls />
+          <Controls>
+            <SubmitBtn
+              id="submitBtn"
+              size="auto"
+              fontSize="16px"
+              onClick={handleClick}
+            />
+            <ResetBtn
+              id="resetBtn"
+              size="auto"
+              fontSize="16px"
+              onClick={handleReset}
+            />
+            <ClearBtn
+              id="clearBtn"
+              size="auto"
+              fontSize="16px"
+              onClick={handleClear}
+            />
+          </Controls>
         </InnerWrapper>
         <InnerWrapper
           position="PreviewWrapper"
@@ -99,28 +130,28 @@ export const MarkdownPreviewer = () => {
         >
           <Tools position="previewtools">
             <WindowTitle title="Markdown previewer" />
-            <ZoomBtn size="40px" id="zmBtn" onClick={zoomPreviewWindow} />
+            <ZoomBtn
+              size="40px"
+              id="previewZoomBtn"
+              onClick={zoomPreviewWindow}
+            />
             <ResizeBtn
               size="40px"
               onClick={resizePreviewWindow}
-              id="editorSize"
+              id="previewSizeBtn"
             />
           </Tools>
           <Editor
             as="div"
             position="preview"
             id="preview"
-            dangerouslySetInnerHTML={{ __html: markDown }}
+            zoom={!windowZoom.previewZoom ? false : true}
+            dangerouslySetInnerHTML={{
+              __html: marked(markDown, { renderer: renderer })
+            }}
           />
         </InnerWrapper>
       </Wrapper>
-
-      <button type="submit" onClick={handleClick}>
-        Create markdown
-      </button>
-      <button type="reset" onClick={resetPreviewer}>
-        Reset
-      </button>
     </>
   );
 };

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { lighten, darken } from "polished";
 export const Button = styled.button`
+  box-sizing: border-box;
   border-radius: 5px;
   border: none;
   background-color: ${(props) => lighten(0.04, props.bg || "transparent")};
@@ -8,6 +9,7 @@ export const Button = styled.button`
   font-size: ${(props) => props.fontSize || "12px"};
   font-weight: 600;
   line-height: ${(props) => props.fontSize || "12px"};
+  padding: 0.5em;
   transition: 0.2s all linear;
   text-transform: uppercase;
   text-align: center;
